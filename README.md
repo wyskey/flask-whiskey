@@ -1,2 +1,2 @@
-# flask-whiskey
+# Flask-Whiskey
 An API generator for Flask-RESTPlus
