@@ -1,0 +1,79 @@
+"""
+from flask_restplus import Namespace, Resource, fields
+
+api = Namespace('[[MODEL_LOWERCASE]]s', description='[[MODEL_LOWERCASE]]s related operations')
+
+[[MODEL_LOWERCASE]] = api.model('[[MODEL_PROPERCASE]]', {
+    'id': fields.Integer(readOnly=True, description='The item unique identifier'),
+    'item': fields.String(required=True, description='The item details')
+})
+
+
+class [[MODEL_PROPERCASE]]DAO(object):
+    def __init__(self):
+        self.counter = 0
+        self.[[MODEL_LOWERCASE]]s = []
+
+    def get(self, id):
+        for [[MODEL_LOWERCASE]] in self.[[MODEL_LOWERCASE]]s:
+            if [[MODEL_LOWERCASE]]['id'] == id:
+                return [[MODEL_LOWERCASE]]
+        api.abort(404, '[[MODEL_PROPERCASE]] {} does not exist'.format(id))
+
+    def create(self, data):
+        [[MODEL_LOWERCASE]] = data
+        [[MODEL_LOWERCASE]]['id'] = self.counter = self.counter + 1
+        self.[[MODEL_LOWERCASE]]s.append([[MODEL_LOWERCASE]])
+        return [[MODEL_LOWERCASE]]
+
+    def update(self, id, data):
+        [[MODEL_LOWERCASE]] = self.get(id)
+        [[MODEL_LOWERCASE]].update(data)
+        return [[MODEL_LOWERCASE]]
+
+    def delete(self, id):
+        [[MODEL_LOWERCASE]] = self.get(id)
+        self.[[MODEL_LOWERCASE]]s.remove([[MODEL_LOWERCASE]])
+
+
+@api.route('/')
+class [[MODEL_PROPERCASE]]List(Resource):
+    '''Shows a list of all [[MODEL_LOWERCASE]]s, and lets you POST to add new items'''
+    @api.doc('list[[MODEL_LOWERCASE]]s')
+    @api.marshal_list_with([[MODEL_LOWERCASE]])
+    def get(self):
+        '''List all items'''
+        return DAO.[[MODEL_LOWERCASE]]s
+
+    @api.doc('create[[MODEL_LOWERCASE]]')
+    @api.expect([[MODEL_LOWERCASE]])
+    @api.marshal_with([[MODEL_LOWERCASE]], code=201)
+    def post(self):
+        '''Create a new item'''
+        return DAO.create(api.payload), 201
+
+
+@api.route('/<int:id>')
+@api.response(404, '[[MODEL_PROPERCASE]] not found')
+@api.param('id', 'The item identifier')
+class [[MODEL_PROPERCASE]](Resource):
+    '''Show a single [[MODEL_LOWERCASE]] item and lets you delete them'''
+    @api.doc('get[[MODEL_LOWERCASE]]')
+    @api.marshal_with([[MODEL_LOWERCASE]])
+    def get(self, id):
+        '''Fetch a given resource'''
+        return DAO.get(id)
+
+    @api.doc('delete[[MODEL_LOWERCASE]]')
+    @api.response(204, '[[MODEL_PROPERCASE]] deleted')
+    def delete(self, id):
+        '''Delete a item given its identifier'''
+        DAO.delete(id)
+        return '', 204
+
+    @api.expect([[MODEL_LOWERCASE]])
+    @api.marshal_with([[MODEL_LOWERCASE]])
+    def put(self, id):
+        '''Update a item given its identifier'''
+        return DAO.update(id, api.payload)
+"""
